@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.sun.jna.*;
@@ -15,12 +16,12 @@ import com.sun.jna.ptr.PointerByReference;
  * @author Thomas Joiner
  * 
  */
-public class Hunspell implements Closeable {
+public class Hunspell implements AutoCloseable {
 
 	private static final HunspellLibrary library = Native.load("hunspell", HunspellLibrary.class);
 	private Pointer handle;
 	private String encoding;
-	private Exception closedAt;
+	private volatile Date closedAt;
 
 	/**
 	 * Instantiate a hunspell object with the given dictionary and affix file
@@ -384,10 +385,12 @@ public class Hunspell implements Closeable {
 	 * Checks the handle to make sure that it is still non-null.
 	 */
 	private void checkHandle() {
-		if ( this.handle == null && this.closedAt != null ) {
-			throw new IllegalStateException("This instance has already been closed.", closedAt);
-		} else if ( this.handle == null ) {
-			throw new IllegalStateException("Hunspell handle is null, but instance has not been closed.");
+		if (handle == null) {
+			if (closedAt != null) {
+				throw new IllegalStateException("This instance was closed at " + closedAt);
+			} else {
+				throw new IllegalStateException("Hunspell handle is null, but instance has not been closed.");
+			}
 		}
 	}
 
@@ -397,32 +400,26 @@ public class Hunspell implements Closeable {
 	 */
 	@Override
 	public void close() {
-		// Don't attempt to close multiple times
-		if ( this.closedAt != null ) {
+		if (closedAt != null) {
 			return;
 		}
-		
-		// Just in case the user has been messing with what they shouldn't
-		if ( this.handle != null ) {
-			library.Hunspell_destroy(handle);
-		} else {
-			return;
+		synchronized (this) {
+			if (closedAt == null) {
+				if (handle != null) {
+					try {
+						library.Hunspell_destroy(handle);
+					} catch (Throwable t) {
+						System.err.println("Failed to destroy Hunspell handle: " + t.getMessage());
+					} finally {
+						handle = null;
+					}
+				}
+				encoding = null;
+				closedAt = new Date();
+			}
 		}
-		
-		this.handle = null;
-		this.encoding = null;
-		this.closedAt = new Exception();
 	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		if (this.closedAt == null){
-			this.close();
-			System.err.println("Hunspell instance was not closed!");
-		}
-		
-		super.finalize();
-	}
+
 	
 	/**
 	 * Convert a list of strings to a list of cstrings in the
