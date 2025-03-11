@@ -1,4 +1,4 @@
-package com.nikialeksey.hunspell;
+package com.cameron.hunspell;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;

@@ -7,9 +7,9 @@
 		<version>7</version>
 	</parent>
 
-	<groupId>com.nikialeksey</groupId>
+	<groupId>com.perrycameron</groupId>
 	<artifactId>jhunspell</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<packaging>jar</packaging>
 
 	<name>jHunspell</name>
@@ -23,15 +23,15 @@
 			<url>https://github.com/thomas-joiner</url>
 		</developer>
 		<developer>
-			<name>Alexey Nikitin</name>
-			<url>https://github.com/nikialeksey</url>
+			<name>Perry Cameron</name>
+			<url>https://github.com/PerryCameron</url>
 		</developer>
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:nikialeksey/jhunspell.git</connection>
-		<url>https://github.com/nikialeksey/jhunspell</url>
-		<developerConnection>scm:git:git@github.com:nikialeksey/jhunspell.git</developerConnection>
+		<connection>scm:git:git@github.com:PerryCameron/jhunspell.git</connection>
+		<url>https://github.com/PerryCameron/jhunspell</url>
+		<developerConnection>scm:git:git@github.com:PerryCameron/jhunspell.git</developerConnection>
 	</scm>
 
 	<licenses>

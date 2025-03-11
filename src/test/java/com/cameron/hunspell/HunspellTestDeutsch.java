@@ -1,4 +1,4 @@
-package com.nikialeksey.hunspell;
+package com.cameron.hunspell;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,4 +1,4 @@
-package com.nikialeksey.hunspell;
+package com.cameron.hunspell;
 
 import com.sun.jna.Library;
 import com.sun.jna.Pointer;
