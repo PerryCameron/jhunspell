@@ -1,6 +1,5 @@
 package com.nikialeksey.hunspell;
 
-import java.io.Closeable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,16 +123,14 @@ public class Hunspell implements AutoCloseable {
 		
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_suggest(handle, slst, Native.toByteArray(word, encoding));
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -153,16 +150,14 @@ public class Hunspell implements AutoCloseable {
 		
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_analyze(handle, slst, Native.toByteArray(word, encoding));
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -182,16 +177,14 @@ public class Hunspell implements AutoCloseable {
 		
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_stem(handle, slst, Native.toByteArray(word, encoding));
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -211,16 +204,14 @@ public class Hunspell implements AutoCloseable {
 		
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_stem2(handle, slst, analysisCStrings, analysis.size());
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -242,16 +233,14 @@ public class Hunspell implements AutoCloseable {
 
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_generate(handle, slst, Native.toByteArray(word, encoding), Native.toByteArray(basedOn, encoding));
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -273,16 +262,14 @@ public class Hunspell implements AutoCloseable {
 		
 		int numResults = 0;
 		
-		List<String> suggestions = Collections.emptyList();
+		List<String> suggestions;
 		try {
 			numResults = library.Hunspell_generate2(handle, slst, Native.toByteArray(word, encoding), analysisCStrings, basedOnAnalysis.size());
 		
 			suggestions = encodedCStringListToStringList(slst, numResults);
 		} finally {
-			if ( slst != null ) {
-				this.free_list(slst, numResults);
-			}
-		}
+            this.free_list(slst, numResults);
+        }
 		
 		return suggestions;
 	}
@@ -427,7 +414,6 @@ public class Hunspell implements AutoCloseable {
 	 * @param strings the strings to encode
 	 * @return the pointer
 	 */
-	@SuppressWarnings("unchecked")
 	public Pointer toEncodedCStringList(final List<String> strings) {
     	if (strings == null)
     		return null;
@@ -446,7 +432,7 @@ public class Hunspell implements AutoCloseable {
 			return Collections.emptyList();
 		}
 
-		List<String> strings = new ArrayList<String>();
+		List<String> strings = new ArrayList<>();
 		Pointer[] pointerArray = slst.getValue().getPointerArray(0, numResults);
 
 		for ( int i = 0; i < numResults; i++) {
